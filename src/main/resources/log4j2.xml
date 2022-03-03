@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN" monitorInterval="300">
+	<Properties>
+		<property name="LOG_HOME">logs/netty-service/${hostName}</property>
+		<property name="BACKUP_HOME">${LOG_HOME}/backup</property>
+	</Properties>
+	<Appenders>
+		<!-- DEBUG MESSAGE -->
+		<RollingRandomAccessFile name="DailyFileAppenderDebug"
+								 fileName="${LOG_HOME}/debug.log" filePattern="${BACKUP_HOME}/debug-%d{yyyy-MM-dd}-%i.log.gz"
+								 immediateFlush="true" append="true">
+			<Filters>
+				<ThresholdFilter level="WARN" onMatch="DENY" onMismatch="NEUTRAL"/>
+				<ThresholdFilter level="INFO" onMatch="ACCEPT" onMismatch="NEUTRAL"/>
+				<ThresholdFilter level="DEBUG" onMatch="ACCEPT" onMismatch="NEUTRAL"/>
+			</Filters>
+			<PatternLayout>
+				<Pattern>%date{yyyy-MM-dd HH:mm:ss.SSS} [%t] %-5level %logger{36}[%line]%H: %m%n</Pattern>
+			</PatternLayout>
+			<Policies>
+				<SizeBasedTriggeringPolicy size="10 MB" />
+				<TimeBasedTriggeringPolicy interval="1" modulate="true" />
+			</Policies>
+			<DefaultRolloverStrategy max="1" />
+		</RollingRandomAccessFile>
+		<!-- INFO MESSAGE -->
+		<RollingRandomAccessFile name="DailyFileAppenderInfo"
+								 fileName="${LOG_HOME}/info.log" filePattern="${BACKUP_HOME}/info-%d{yyyy-MM-dd}-%i.log.gz"
+								 immediateFlush="true" append="true">
+			<Filters>
+				<ThresholdFilter level="WARN" onMatch="DENY" onMismatch="NEUTRAL"/>
+				<ThresholdFilter level="INFO" onMatch="ACCEPT" onMismatch="NEUTRAL"/>
+				<ThresholdFilter level="ERROR" onMatch="ACCEPT" onMismatch="NEUTRAL"/>
+			</Filters>
+			<PatternLayout>
+				<Pattern>%date{yyyy-MM-dd HH:mm:ss.SSS} [%t] %-5level %logger{36}[%line]%H: %m%n</Pattern>
+			</PatternLayout>
+			<Policies>
+				<SizeBasedTriggeringPolicy size="50 MB" />
+				<TimeBasedTriggeringPolicy interval="1" modulate="true" />
+			</Policies>
+			<DefaultRolloverStrategy max="1" />
+		</RollingRandomAccessFile>
+
+		<!-- WARN MESSAGE -->
+		<RollingRandomAccessFile name="DailyFileAppenderWarn"
+								 fileName="${LOG_HOME}/warn.log" filePattern="${BACKUP_HOME}/warn-%d{yyyy-MM-dd}-%i.log.gz"
+								 immediateFlush="true" append="true">
+			<Filters>
+				<ThresholdFilter level="WARN" onMatch="ACCEPT" onMismatch="DENY"/>
+			</Filters>
+			<PatternLayout>
+				<Pattern>%date{yyyy-MM-dd HH:mm:ss.SSS} [%t] %-5level %logger{36}[%line]%H: %m%n</Pattern>
+			</PatternLayout>
+			<Policies>
+				<SizeBasedTriggeringPolicy size="20 MB" />
+				<TimeBasedTriggeringPolicy interval="1" modulate="true" />
+			</Policies>
+			<DefaultRolloverStrategy max="1" />
+		</RollingRandomAccessFile>
+
+		<!-- Error MESSAGE -->
+		<RollingRandomAccessFile name="RollingFileError"
+								 fileName="${LOG_HOME}/error.log" filePattern="${BACKUP_HOME}/error-%d{yyyy-MM-dd}-%i.log.gz"
+								 immediateFlush="true" append="true">
+			<Filters>
+				<ThresholdFilter level="ERROR" onMatch="ACCEPT" onMismatch="DENY"/>
+			</Filters>
+			<PatternLayout>
+				<Pattern>%date{yyyy-MM-dd HH:mm:ss.SSS} [%t] %-5level %logger{36}[%line]%H: %m%n</Pattern>
+			</PatternLayout>
+			<Policies>
+				<SizeBasedTriggeringPolicy size="30 MB" />
+				<TimeBasedTriggeringPolicy interval="1" modulate="true" />
+			</Policies>
+			<DefaultRolloverStrategy max="1" />
+		</RollingRandomAccessFile>
+
+		<Console name="ConsoleAppender">
+			<!--<PatternLayout pattern="%d [%p] %c %m%n"/> -->
+			<PatternLayout
+					pattern="%date{yyyy-MM-dd HH:mm:ss.SSS} %level [%thread][%file:%line]%H: %m%n" />
+		</Console>
+	</Appenders>
+	<Loggers>
+		<root level="INFO" includeLocation="true">
+			<AppenderRef ref="DailyFileAppenderInfo" />
+			<AppenderRef ref="DailyFileAppenderWarn" />
+			<AppenderRef ref="RollingFileError" />
+			<AppenderRef ref="ConsoleAppender" />
+		</root>
+	</Loggers>
+</Configuration>
