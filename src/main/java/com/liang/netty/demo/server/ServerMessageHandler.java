@@ -1,5 +1,8 @@
 package com.liang.netty.demo.server;
 
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.CompositeByteBuf;
+import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 
@@ -16,6 +19,18 @@ public class ServerMessageHandler extends ChannelInboundHandlerAdapter {
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
         cause.printStackTrace();
         ctx.close();
+    }
+
+    public static void byteBufComposite() {
+        //复合缓冲区，只是提供一个视图
+        CompositeByteBuf messageBuf = Unpooled.compositeBuffer();
+        ByteBuf headerBuf = Unpooled.buffer();
+        ByteBuf bodyBuf = Unpooled.directBuffer();
+        messageBuf.addComponents(headerBuf, bodyBuf);
+        messageBuf.removeComponent(0);
+        for (ByteBuf buf : messageBuf) {
+            System.out.println(buf.toString());
+        }
     }
 
 
