@@ -27,7 +27,7 @@ public class HttpClient {
                 @Override
                 public void initChannel(SocketChannel ch) {
                     ch.pipeline().addLast(new HttpResponseDecoder());
-                    ch.pipeline().addLast(new HttpRequestEncoder());
+                    ch.pipeline().addLast(new CustomMessageEncoder());
                     ch.pipeline().addLast(new HttpClientHandler());
                 }
             });

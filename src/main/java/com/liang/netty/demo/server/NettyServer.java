@@ -10,9 +10,7 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.codec.http.HttpContentCompressor;
 import io.netty.handler.codec.http.HttpObjectAggregator;
-import io.netty.handler.codec.http.HttpServerCodec;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
 
 import java.net.InetSocketAddress;
 
@@ -32,10 +30,11 @@ public class NettyServer {
                         @Override
                         public void initChannel(SocketChannel ch) throws Exception {
                             ch.pipeline()
-                                    .addLast("codec", new HttpServerCodec())
+                                    .addLast(new CustomMessageDecoder())
                                     .addLast("compressor", new HttpContentCompressor())
                                     .addLast("aggregator", new HttpObjectAggregator(65536))
-                                    .addLast("handler", new HttpServerHandler());
+                                    .addLast("handler", new HttpServerHandler())
+                                    .addLast(new ServerMessageHandler());
                         }
                     })
                     .childOption(ChannelOption.SO_KEEPALIVE, true);
