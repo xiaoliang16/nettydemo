@@ -1,5 +1,8 @@
 package com.liang.netty.demo.client;
 
+import cn.hutool.core.date.DateTime;
+import com.liang.netty.demo.entity.MsgInfo;
+import com.liang.netty.demo.entity.MsgModel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelId;
 import io.netty.channel.ChannelInboundHandlerAdapter;
@@ -27,6 +30,18 @@ public class NettyClientHandler extends ChannelInboundHandlerAdapter {
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+        MsgModel msgModel = (MsgModel)msg;
+        MsgInfo msgInfo = new MsgInfo();
+        msgInfo.setUuid("1000");
+        msgInfo.setMsgData("测试发消息");
+        msgInfo.setToUserId("6666");
+        msgInfo.setFromUserId("5555");
+        msgInfo.setSessionId("uewewew");
+        msgInfo.setDateTime(new DateTime());
+        msgInfo.setMsgType(1);
+        msgModel.setData(msgInfo);
+        msgModel.setType(1);
+        msgModel.setDateTime(new DateTime());
         ctx.channel().writeAndFlush(msg);
     }
 

@@ -1,11 +1,15 @@
 package com.liang.netty.demo.service.impl;
 
 import com.liang.netty.demo.entity.ChannelData;
+import com.liang.netty.demo.entity.MsgModel;
+import com.liang.netty.demo.entity.NettyIdentifier;
 import com.liang.netty.demo.entity.User;
 import com.liang.netty.demo.service.ChannelService;
+import com.liang.netty.demo.service.MsgService;
 import io.netty.channel.ChannelId;
 import io.netty.util.AttributeKey;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import io.netty.channel.ChannelHandlerContext;
 import org.springframework.util.StringUtils;
@@ -15,6 +19,9 @@ import java.net.InetSocketAddress;
 @Service
 @Slf4j
 public class ChannelServiceImpl extends ChannelData implements ChannelService {
+
+    @Autowired
+    private MsgService msgService;
 
     @Override
     public void bindingChannel(User user, ChannelHandlerContext ctx) {
@@ -46,6 +53,11 @@ public class ChannelServiceImpl extends ChannelData implements ChannelService {
     @Override
     public void receiveMsg(ChannelHandlerContext ctx, Object msg) {
          log.info("通道: {}, 接收到消息: {} ", ctx.channel().id(), msg.toString());
+         MsgModel msgModel = (MsgModel)msg;
+         String userId = ctx.channel().attr(NettyIdentifier.USER_ID_KEY).get();
+         User user = new User();
+         user.setUserId(userId);
+         msgService.singleSend(ctx, msgModel, user);
     }
 
     @Override

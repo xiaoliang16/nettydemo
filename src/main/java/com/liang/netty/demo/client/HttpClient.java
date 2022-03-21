@@ -28,7 +28,8 @@ public class HttpClient {
                 public void initChannel(SocketChannel ch) {
                     ch.pipeline().addLast(new HttpResponseDecoder());
                     ch.pipeline().addLast(new CustomMessageEncoder());
-                    ch.pipeline().addLast(new HttpClientHandler());
+                   // ch.pipeline().addLast(new HttpClientHandler());
+                    ch.pipeline().addLast(new NettyClientHandler());
                 }
             });
             ChannelFuture f = b.connect(host, port).sync();

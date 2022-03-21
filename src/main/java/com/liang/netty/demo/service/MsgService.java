@@ -11,4 +11,6 @@ public interface MsgService {
     void sendResp(ChannelHandlerContext ctx, MsgModel msgModel);
 
     void msgError(ChannelHandlerContext ctx, MsgModel msgModel);
+
+    void singleSend(ChannelHandlerContext ctx, MsgModel reqModel, User user);
 }

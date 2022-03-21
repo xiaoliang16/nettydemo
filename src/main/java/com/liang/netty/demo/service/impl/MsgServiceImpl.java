@@ -1,16 +1,16 @@
 package com.liang.netty.demo.service.impl;
 
-import com.liang.netty.demo.entity.MsgModel;
-import com.liang.netty.demo.entity.NettyIdentifier;
+import com.liang.netty.demo.entity.*;
 import com.liang.netty.demo.service.MsgService;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.ChannelId;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 @Service
 @Slf4j
-public class MsgServiceImpl implements MsgService {
+public class MsgServiceImpl extends ChannelData implements MsgService {
 
     @Override
     public void pong(ChannelHandlerContext ctx) {
@@ -31,5 +31,14 @@ public class MsgServiceImpl implements MsgService {
     @Override
     public void msgError(ChannelHandlerContext ctx, MsgModel msgModel) {
 
+    }
+
+    @Override
+    public void singleSend(ChannelHandlerContext ctx, MsgModel msgModel, User user) {
+       MsgInfo msgInfo = msgModel.getData();
+       String toUserId = msgInfo.getToUserId();
+       ChannelId channelId = userChannel.get(toUserId);
+       ChannelHandlerContext context = contextChannel.get(channelId);
+       sendResp(context, msgModel);
     }
 }

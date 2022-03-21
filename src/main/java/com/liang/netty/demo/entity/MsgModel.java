@@ -5,10 +5,10 @@ import lombok.Data;
 
 /**
  * 消息对象
- * @param <T>
+ * @param
  */
 @Data
-public class MsgModel<T> {
+public class MsgModel {
 
     /**
      * 消息类型
@@ -18,7 +18,7 @@ public class MsgModel<T> {
     /**
      * 内容实体
      */
-    T data;
+    MsgInfo data;
 
     /**
      * 时间戳
