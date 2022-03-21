@@ -1,5 +1,6 @@
 package com.liang.netty.demo.server;
 
+import com.liang.netty.demo.handler.impl.MessageHandler;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
@@ -34,7 +35,8 @@ public class NettyServer {
                                     .addLast("compressor", new HttpContentCompressor())
                                     .addLast("aggregator", new HttpObjectAggregator(65536))
                                     .addLast("handler", new HttpServerHandler())
-                                    .addLast(new ServerMessageHandler());
+                                    .addLast(new ServerMessageHandler())
+                                    .addLast(new MessageHandler());
                         }
                     })
                     .childOption(ChannelOption.SO_KEEPALIVE, true);
