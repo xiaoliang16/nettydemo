@@ -21,4 +21,5 @@ public class NettyIdentifier {
      * 用户ID
      */
     public static final AttributeKey<String> USER_ID_KEY = AttributeKey.valueOf("userId");
+
 }
