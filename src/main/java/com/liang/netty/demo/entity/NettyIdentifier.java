@@ -22,4 +22,10 @@ public class NettyIdentifier {
      */
     public static final AttributeKey<String> USER_ID_KEY = AttributeKey.valueOf("userId");
 
+
+    /**
+     * 是否登录
+     */
+    public static final AttributeKey<Boolean> AUTH_KEY = AttributeKey.valueOf("authentication");
+
 }

@@ -10,9 +10,11 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.codec.http.*;
+import io.netty.handler.timeout.IdleStateHandler;
 
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
+import java.util.concurrent.TimeUnit;
 
 public class HttpClient {
 
@@ -28,7 +30,8 @@ public class HttpClient {
                 public void initChannel(SocketChannel ch) {
                     ch.pipeline().addLast(new HttpResponseDecoder());
                     ch.pipeline().addLast(new CustomMessageEncoder());
-                   // ch.pipeline().addLast(new HttpClientHandler());
+                    ch.pipeline().addLast(new HttpClientHandler());
+                    ch.pipeline().addLast(new IdleStateHandler(0, 0, 15, TimeUnit.SECONDS));
                     ch.pipeline().addLast(new NettyClientHandler());
                 }
             });

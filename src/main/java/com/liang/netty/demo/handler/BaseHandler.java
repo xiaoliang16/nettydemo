@@ -10,10 +10,10 @@ public interface BaseHandler {
 
     default MsgService getMsgService() {
         return SpringUtil.getBean(MsgServiceImpl.class);
-    };
+    }
 
     default ChannelService getChannelService() {
         return SpringUtil.getBean(ChannelServiceImpl.class);
-    };
+    }
 
 }
